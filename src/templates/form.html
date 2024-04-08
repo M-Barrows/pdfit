@@ -1,7 +1,22 @@
-<div class="file-area">
-    <input type="text">
-</div>
-<div>
-  <button>+</button>
-</div>
+<h2>Page Setup</h2>
 
+<form id="page-setup">
+  <div>
+    <input type="number" placeholder="Images per sheet">
+    <input type="number" placeholder="Sheet Orientation (P/L)">
+  </div>
+</form>
+
+<h2>Image URLs</h2>
+
+<button hx-trigger="click" hx-get="/add-image" hx-target="#main-form" hx-swap="beforeend"> + </button>
+
+<br>
+<br>
+
+<form id="main-form"> 
+  <div>
+    <input type="text">
+  </div>
+</form>
+<br>
