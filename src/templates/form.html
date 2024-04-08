@@ -1,22 +1,23 @@
-<h2>Page Setup</h2>
+<!-- <h2>Page Setup</h2> -->
 
-<form id="page-setup">
-  <div>
-    <input type="number" placeholder="Images per sheet">
-    <input type="number" placeholder="Sheet Orientation (P/L)">
-  </div>
-</form>
-
+<!-- <form id="page-setup"> -->
+<!--   <div> -->
+<!--     <input type="number" placeholder="Images per sheet"> -->
+<!--     <input type="number" placeholder="Sheet Orientation (P/L)"> -->
+<!--   </div> -->
+<!-- </form> -->
+<!---->
 <h2>Image URLs</h2>
 
-<button hx-trigger="click" hx-get="/add-image" hx-target="#main-form" hx-swap="beforeend"> + </button>
+<button hx-trigger= "click" hx-get="/add-image" hx-target="#main-form" hx-swap="beforeend"> + </button>
+<button hx-post="/create" hx-include="#main-form" hx-target="#form-data" style="background-color: green">PDF IT!</button>
 
 <br>
 <br>
 
 <form id="main-form"> 
   <div>
-    <input type="text">
+    <input name="url" type="text">
   </div>
 </form>
 <br>
