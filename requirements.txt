@@ -1,2 +1,3 @@
 fpdf
 requests
+beautifulsoup4

@@ -1,23 +1,14 @@
-<!-- <h2>Page Setup</h2> -->
-
-<!-- <form id="page-setup"> -->
-<!--   <div> -->
-<!--     <input type="number" placeholder="Images per sheet"> -->
-<!--     <input type="number" placeholder="Sheet Orientation (P/L)"> -->
-<!--   </div> -->
-<!-- </form> -->
-<!---->
-<h2>Image URLs</h2>
-
-<button hx-trigger= "click" hx-get="/add-image" hx-target="#main-form" hx-swap="beforeend"> + </button>
-<button hx-post="/create" hx-include="#main-form" hx-target="#form-data" style="background-color: green">PDF IT!</button>
-
-<br>
-<br>
-
-<form id="main-form"> 
-  <div>
-    <input name="url" type="text">
+<form id="main-form">
+  <div class="row mb-3">
+<h2>📸 Image URLs</h2>
   </div>
+  <div class="row g-3 mb-2 align-items-center">
+    <div class="col-auto">
+  <button class="btn btn-secondary" hx-trigger= "click" hx-get="/add-image" hx-target="#main-form" hx-swap="beforeend"> Add Link </button>
+    </div>
+    <div class="col-auto">
+  <button class="btn btn-primary" hx-post="/create" hx-include="#main-form" hx-target="#form-data" style="background-color: ">📃 Create PDF <span class='htmx-indicator'>...⌛...</span></button>
+    </div>
+  </div>
+      {% include 'add-image.html' %}
 </form>
-<br>
