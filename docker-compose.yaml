@@ -1,0 +1,22 @@
+# docker-compose.yml
+# This is the file for running the Docker container
+
+# Use version 3 of the compose file format
+version: '3'
+
+# Define the services (containers) that make up the app
+services:
+    # The service for running the Dash app
+    dash:
+        # Build the image from the Dockerfile
+        build:
+            context: .
+            dockerfile: dockerfile
+        # Name the container
+        container_name: pdfit
+        # Mount the current directory as a volume in the container
+        volumes:
+            - .:/code
+        # Expose port 80 of the container to port 8080 of the host
+        ports:
+            - "80:8080"
