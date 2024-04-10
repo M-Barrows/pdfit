@@ -42,7 +42,7 @@ def create_app():
     @app.route("/apps/pdfit/download/<path:filename>", methods = ["GET"])
     def download_pdf(filename):
         print(os.getcwd())
-        return send_from_directory("../output",filename,as_attachment=True)
+        return send_from_directory("../files/output",filename,as_attachment=True)
     
     @app.route("/apps/pdfit/add-image", methods=["GET","POST"])
     def add_image():

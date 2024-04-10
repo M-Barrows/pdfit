@@ -27,7 +27,7 @@ def download_image(url:str):
     page_response = requests.get(url, headers=HEADERS, stream = True) 
     if page_response.status_code == 200:
         img_src = get_image_url(url)
-        file_name = f"image-library/{img_src.split('/')[-1]}"
+        file_name = f"files/image-library/{img_src.split('/')[-1]}"
         if pathlib.Path(file_name).is_file():
             logging.info(f"⏱️i using cached image at {file_name}") 
             return file_name, errors
@@ -69,5 +69,5 @@ def create_pdf(images=list()):
             successful_images.append(image)
         today = datetime.now().strftime("%Y%m%d_%H%M")
         pdf_file_name = f"{today}_pdfit_output.pdf"
-        pdf.output(f"output/{pdf_file_name}", "F")
+        pdf.output(f"files/output/{pdf_file_name}", "F")
         return pdf_file_name, successful_images, images_to_manually_print

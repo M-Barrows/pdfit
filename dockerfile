@@ -12,7 +12,8 @@ ENV FLASK_RUN_HOST=0.0.0.0
 RUN mkdir /code
 WORKDIR /code
 # Create local folders needed for saving output and images
-RUN mkdir output image-library
+RUN mkdir files
+RUN mkdir files/output files/image-library
 
 # Copy the requirements file and install the dependencies
 COPY requirements.txt /code/
