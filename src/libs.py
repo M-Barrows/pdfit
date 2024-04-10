@@ -6,6 +6,8 @@ import secrets
 import logging
 from bs4 import BeautifulSoup
 from datetime import datetime
+import PIL 
+from PIL import Image 
 
 HEADERS = {'User-Agent': 'PDF-it'} 
 def get_image_url(base_url:str): 
@@ -46,6 +48,14 @@ def download_image(url:str):
         logging.warn(f"⛔ Could not download image from {url}. Skipping.")
         return None
 
+def scale_dimensions(img_path,max_w:int=1000,max_h:int=720):
+    img = Image.open(img_path) 
+    img_name = img_path.split('.')[:-1][0]
+    size = max_w,max_h
+    img.thumbnail(size,Image.Resampling.LANCZOS)
+    img.save(f"{img_name}_{max_w}_{max_h}.png")
+    return f"{img_name}_{max_w}_{max_h}.png"
+
 def create_pdf(images=list()):
     if len(images) < 1:
         raise ValueError("No files provided")
@@ -61,11 +71,12 @@ def create_pdf(images=list()):
                 continue
             page_image_number = images_per_page  if (i % images_per_page) == 0 else (i % images_per_page)
             img_height = 10/images_per_page
+            img_file_path = scale_dimensions(img_file_path)
             if page_image_number == 1:
                 pdf.add_page()
-                pdf.image(str(img_file_path),x=0,y=0,w=8,h=img_height)
+                pdf.image(str(img_file_path),x=0,y=0,w=0,h=img_height)
             else:
-                pdf.image(str(img_file_path),x=None,y=(page_image_number-1)*img_height,w=8,h=img_height)
+                pdf.image(str(img_file_path),x=None,y=(page_image_number-1)*img_height,w=0,h=img_height)
             successful_images.append(image)
         today = datetime.now().strftime("%Y%m%d_%H%M")
         pdf_file_name = f"{today}_pdfit_output.pdf"

@@ -2,3 +2,4 @@ fpdf
 requests
 beautifulsoup4
 flask
+Pillow
