@@ -48,7 +48,7 @@ def download_image(url:str):
         logging.warn(f"⛔ Could not download image from {url}. Skipping.")
         return None
 
-def scale_dimensions(img_path,max_w:int=1000,max_h:int=720):
+def scale_dimensions(img_path,max_w:int=1200,max_h:int=750):
     img = Image.open(img_path) 
     img_name = img_path.split('.')[:-1][0]
     size = max_w,max_h
