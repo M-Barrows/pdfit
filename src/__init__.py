@@ -21,11 +21,11 @@ def create_app():
     
     app = Flask(__name__, static_folder= 'static')
 
-    @app.route("/", methods=["GET"])
+    @app.route("/apps/pdfit", methods=["GET"])
     def home():
         return "Hi There",200
 
-    @app.route("/create", methods=["GET","POST"])
+    @app.route("/apps/pdfit/create", methods=["GET","POST"])
     def create_doc(): 
         if request.method == "POST":
             urls = request.form.getlist("url")
@@ -39,12 +39,12 @@ def create_app():
         else:
             return render_template("index.html"),200
 
-    @app.route("/download/<path:filename>", methods = ["GET"])
+    @app.route("/apps/pdfit/download/<path:filename>", methods = ["GET"])
     def download_pdf(filename):
         print(os.getcwd())
         return send_from_directory("../output",filename,as_attachment=True)
     
-    @app.route("/add-image", methods=["GET","POST"])
+    @app.route("/apps/pdfit/add-image", methods=["GET","POST"])
     def add_image():
         return render_template("add-image.html"),200
 
