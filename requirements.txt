@@ -2,4 +2,5 @@ fpdf
 requests
 beautifulsoup4
 flask
+Flask-SQLAlchemy
 Pillow

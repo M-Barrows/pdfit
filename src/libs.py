@@ -2,12 +2,12 @@ from fpdf import FPDF
 import pathlib
 import requests
 import shutil
-import secrets
 import logging
 from bs4 import BeautifulSoup
 from datetime import datetime
-import PIL 
 from PIL import Image 
+from src.db import Image as DBImage, Document as DBDocument 
+
 
 HEADERS = {'User-Agent': 'PDF-it'} 
 def get_image_url(base_url:str): 
@@ -77,8 +77,11 @@ def create_pdf(images=list()):
                 pdf.image(str(img_file_path),x=0,y=0,w=0,h=img_height)
             else:
                 pdf.image(str(img_file_path),x=None,y=(page_image_number-1)*img_height,w=0,h=img_height)
-            successful_images.append(image)
-        today = datetime.now().strftime("%Y%m%d_%H%M")
+            img_object = DBImage(image_url = image, storage_location = img_file_path)
+            successful_images.append(img_object)
+        today = datetime.now().strftime("%Y%m%d_%H%M%S")
         pdf_file_name = f"{today}_pdfit_output.pdf"
-        pdf.output(f"files/output/{pdf_file_name}", "F")
-        return pdf_file_name, successful_images, images_to_manually_print
+        pdf_file_path = f"files/output/{pdf_file_name}"
+        pdf.output(pdf_file_path, "F")
+        doc_object = DBDocument( name= pdf_file_name, storage_location= pdf_file_path, created_date=datetime.now(),images = successful_images)
+        return doc_object, images_to_manually_print

@@ -11,9 +11,13 @@ ENV FLASK_RUN_HOST=0.0.0.0
 # Create a directory for the code and set it as the working directory
 RUN mkdir /code
 WORKDIR /code
-# Create local folders needed for saving output and images
+
+# Create local directories needed for saving output and images
 RUN mkdir files
 RUN mkdir files/output files/image-library
+
+# Create local directory for storing database entries
+RUN mkdir /database
 
 # Copy the requirements file and install the dependencies
 COPY requirements.txt /code/
@@ -22,4 +26,4 @@ RUN pip install -r requirements.txt
 # Copy the rest of the code into the image
 EXPOSE 8080
 COPY . /code/
-CMD ["python", "app.py"]
+CMD ["python","app.py"]
