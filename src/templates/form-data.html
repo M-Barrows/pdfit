@@ -1,8 +1,19 @@
 <div id="form-data">
+
   {% if successful_urls|length >0 %}
-  <a href="{{url_for('download_pdf',filename=pdf_download_link)}}"><button>Download</button></a>
+  <div class="row my-2">
+    <a href="{{url_for('download_pdf',filename=pdf_download_link)}}" target="_blank" id="download-button"><button class="btn btn-success">Download</button></a>
+  </div>
+  <div class="row my-2 p-4" style="background-color: #333" >
+    {% for image in successful_urls %}
+      <div class="col-md-4">
+      <img src={{ url_for('download_image',filename=image)}} style="object-fit: contain; max-width: 100%; max-height: 10vh">
+      </div>
+    {% endfor %}
+  </div>
   {% endif %}
-{% if failed_urls|length > 0 %}
+  {% if failed_urls|length > 0 %}
+  <div class="row my-2">
   <h2 style="{color: red}">⛔Failed URLs</h2>
   <p>These images will need to be manually printed</p>
 
@@ -11,16 +22,6 @@
     <li> <a href="{{url}}">{{ url }}</a> </li>
     {% endfor %}
   </ul>
-</div>
+  </div>
 {% endif %}
-{% if successful_urls|length > 0 %}
-<h2 style="{color: green}">✅Successful URLs</h2>
-  <p>These images were included in the PDF Download</p>
-
-  <ul>
-    {% for url in successful_urls %}
-    <li> <a href="{{url}}" target="_blank">{{ url }}</a> </li>
-    {% endfor %}
-  </ul>
 </div>
-{% endif %}

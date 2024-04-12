@@ -1,9 +1,9 @@
-<div class="row mb-3" hx-ext="remove">
+<div class="row my-2" hx-ext="remove">
   <div class="col-auto">
     {% if link is defined %}
-    <input name="url" type="text" class="form-control" value={{link}}>
+      <input name="url" type="text" class="form-control" value={{link}}>
     {% else %}
-  <input name="url" type="text" class="form-control" placeholder="Paste link here">
+      <input name="url" type="text" class="form-control" placeholder="Paste link here">
     {% endif %}
   </div>
   <div class="col-auto" data-remove="true"><button class="btn btn-danger">🗑️</button></div>

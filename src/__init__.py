@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, redirect, send_from_directory,jsonify
+from flask import Flask, render_template, request, url_for, redirect, send_from_directory,jsonify,make_response
 from src.libs import create_pdf
 from logging.config import dictConfig
 import os
@@ -62,7 +62,7 @@ def create_app():
                 "form-data.html",
                 pdf_download_link=doc_object.name, 
                 failed_urls=failed_urls,
-                successful_urls=[image.image_url for image in doc_object.images]
+                successful_urls=[image.storage_location.split('/')[-1] for image in doc_object.images]
             ),200
         else:
             return render_template("index.html"),200
@@ -70,7 +70,8 @@ def create_app():
     @app.route("/apps/pdfit/download/<path:filename>", methods = ["GET"])
     def download_pdf(filename):
         print(os.getcwd())
-        return send_from_directory("../files/output",filename,as_attachment=True)
+        print("Made It To The Download Link")
+        return send_from_directory("../files/output/",filename),200
     
     @app.route("/apps/pdfit/add-image", methods=["GET","POST"])
     def add_image():
@@ -83,7 +84,7 @@ def create_app():
     
     @app.route("/apps/pdfit/top-images/<int:n>", methods = ["GET"])
     def get_top_images(n:int):
-        top_n_images = db.session.query(func.count(Document.id).label("usage_count"), Image.storage_location,Image.id,Image.image_url).select_from(Image).join(doc_img_association).join(Document).group_by(Image.id).limit(n).all()
+        top_n_images = db.session.query(func.count(Document.id).label("usage_count"), Image.storage_location,Image.id,Image.image_url).select_from(Image).join(doc_img_association).join(Document).group_by(Image.id).order_by(desc(func.count(Document.id))).limit(n).all()
         top_n_images = [img._asdict() for img in top_n_images]
         [img.update({"file_name":img.get("storage_location").split("/")[-1]}) for img in top_n_images]
         return render_template("top-images.html",top_n_images=top_n_images)
@@ -97,5 +98,8 @@ def create_app():
     def download_image(filename):
         print(filename)
         return send_from_directory("../files/image-library/",filename,as_attachment=True)
-
+    
+    @app.route("/apps/pdfit/clear",methods = ["GET"])
+    def clear_content():
+        return "",200
     return app

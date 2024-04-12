@@ -7,10 +7,9 @@
     <title>PDF-IT</title>
     <script src="https://unpkg.com/htmx.org@1.9.11"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" type "text/css" href="{{ url_for('static',filename='style.css') }}"/>
-<script src="https://unpkg.com/htmx-remove@latest"
-        integrity="sha384-v6VOSW2F42qo+95FGFDZCY72+0md5SolbibTa8Kgn8DkCrevZNkgTsWXdEMXyeRX"
-        crossorigin="anonymous">
+    <script src="https://unpkg.com/htmx-remove@latest" integrity="sha384-v6VOSW2F42qo+95FGFDZCY72+0md5SolbibTa8Kgn8DkCrevZNkgTsWXdEMXyeRX" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='style.css') }}">
+
 </script>
 
   </head>
@@ -19,11 +18,13 @@
     <em>Combine images from <a href="https://www.supercoloring.com" target="_blank"> supercoloring.com</a> into one PDF</em>
     <div class="container text-center">
       <div class="row">
+	<div class="col">
 	  {% include 'form.html' %}
 	</div>
-	<div class="row">
+	<div class="col">
 	  {% include 'form-data.html' %}
 	</div>
+      </div>
       <div class="row" hx-get="{{url_for('get_top_images',n=5)}}" hx-trigger="load">
 	  {% include 'top-images.html' %}
       </div>
