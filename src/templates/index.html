@@ -24,6 +24,8 @@
 	<div class="row">
 	  {% include 'form-data.html' %}
 	</div>
+      <div class="row" hx-get="{{url_for('get_top_images',n=5)}}" hx-trigger="load">
+	  {% include 'top-images.html' %}
       </div>
 	{% include 'footer.html' %}
   </body>

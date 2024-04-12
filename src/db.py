@@ -2,7 +2,8 @@ from datetime import datetime
 from typing import List
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, relationship, mapped_column, Mapped
-from sqlalchemy import Table, Column, ForeignKey
+from sqlalchemy import Table, Column, ForeignKey, func
+
 
 class Base(DeclarativeBase):
   pass
@@ -29,6 +30,7 @@ class Image(db.Model):
     __tablename__ = "images"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    image_url: Mapped[str] = mapped_column(unique=True,sqlite_on_conflict_unique='REPLACE')
-    storage_location: Mapped[str] = mapped_column(unique=True,sqlite_on_conflict_unique='REPLACE')
+    image_url: Mapped[str] = mapped_column(unique=True)
+    storage_location: Mapped[str] = mapped_column(unique=True)
     documents: Mapped[List["Document"]] = relationship(secondary= doc_img_association, back_populates="images")
+

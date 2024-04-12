@@ -6,7 +6,7 @@ import logging
 from bs4 import BeautifulSoup
 from datetime import datetime
 from PIL import Image 
-from src.db import Image as DBImage, Document as DBDocument 
+from src.db import Image as DBImage, Document as DBDocument, db 
 
 
 HEADERS = {'User-Agent': 'PDF-it'} 
@@ -83,5 +83,6 @@ def create_pdf(images=list()):
         pdf_file_name = f"{today}_pdfit_output.pdf"
         pdf_file_path = f"files/output/{pdf_file_name}"
         pdf.output(pdf_file_path, "F")
-        doc_object = DBDocument( name= pdf_file_name, storage_location= pdf_file_path, created_date=datetime.now(),images = successful_images)
-        return doc_object, images_to_manually_print
+        print(successful_images)
+        doc_object = DBDocument( name= pdf_file_name, storage_location= pdf_file_path, created_date=datetime.now())
+        return doc_object, successful_images, images_to_manually_print

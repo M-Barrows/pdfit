@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, url_for, redirect, send_from_directory
+from flask import Flask, render_template, request, url_for, redirect, send_from_directory,jsonify
 from src.libs import create_pdf
 from logging.config import dictConfig
 import os
 from src.db import db, Document, Image, doc_img_association
+from sqlalchemy import func, desc
 
 def create_app():
     dictConfig({
@@ -42,8 +43,20 @@ def create_app():
     def create_doc():
         if request.method == "POST":
             urls = request.form.getlist("url")
-            doc_object, failed_urls = create_pdf(urls) 
+            doc_object, successful_images, failed_urls = create_pdf(urls)
             db.session.add(doc_object)
+            db.session.commit()
+            for img in successful_images:
+                try:
+                    img = db.session.query(Image).where(Image.image_url == img.image_url).one()
+                except:
+                    db.session.add(img)
+                    db.session.commit()
+                else:
+                    img=img
+                finally:
+                    doc_object.images.append(img)
+            db.session.flush()
             db.session.commit()
             return render_template(
                 "form-data.html",
@@ -61,7 +74,28 @@ def create_app():
     
     @app.route("/apps/pdfit/add-image", methods=["GET","POST"])
     def add_image():
-        return render_template("add-image.html"),200
+        if request.method == "POST":
+            print(request.args.get("link"))
+            return render_template("add-image.html",link=request.args.get("link"))
+        else: 
+            return render_template("add-image.html"),200
+        
     
-    return app
+    @app.route("/apps/pdfit/top-images/<int:n>", methods = ["GET"])
+    def get_top_images(n:int):
+        top_n_images = db.session.query(func.count(Document.id).label("usage_count"), Image.storage_location,Image.id,Image.image_url).select_from(Image).join(doc_img_association).join(Document).group_by(Image.id).limit(n).all()
+        top_n_images = [img._asdict() for img in top_n_images]
+        [img.update({"file_name":img.get("storage_location").split("/")[-1]}) for img in top_n_images]
+        return render_template("top-images.html",top_n_images=top_n_images)
 
+    @app.route("/apps/pdfit/image/<int:id>", methods = ["GET"])
+    def get_image(id:int):
+        img = db.get_or_404(Image,id)
+        return f"<img class='card-img-top' src={img}>"
+    
+    @app.route("/apps/pdfit/image/<path:filename>", methods = ["GET"])
+    def download_image(filename):
+        print(filename)
+        return send_from_directory("../files/image-library/",filename,as_attachment=True)
+
+    return app

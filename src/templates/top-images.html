@@ -1,0 +1,14 @@
+<h2>Top 5 Used Images</h2>
+<div class="card-group">
+{% for image in top_n_images %}
+<div class="card">
+  <img class='card-img-top' src={{ url_for('download_image',filename=image.file_name) }} style="height:80%; width:100%; object-fit: cover">  
+  <div class="card-body">
+    <a href="#" class="btn btn-primary" hx-trigger= "click" hx-post="{{ url_for('add_image',link=image.image_url) }}" hx-target="#main-form" hx-swap="beforeend">Add</a>
+  </div>
+  <div class="card-footer">
+    <small class="text-muted">Used {{image.usage_count}} times!</small>
+  </div>
+</div>    
+{% endfor %}
+</div>
