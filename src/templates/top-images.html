@@ -2,7 +2,7 @@
 <div class="card-group">
 {% for image in top_n_images %}
 <div class="card">
-  <img class='card-img-top card-img-top-containonhover' src={{ url_for('download_image',filename=image.file_name) }} style="height:80%; width:100%;">  
+  <img class='card-img-top' src={{ url_for('download_image',filename=image.file_name) }} style="height:80%; width:100%;">  
   <div class="card-body">
     <a href="#" class="btn btn-primary" hx-trigger= "click" hx-post="{{ url_for('add_image',link=image.image_url) }}" hx-target="#link-list" hx-swap="afterbegin">Add</a>
   </div>
